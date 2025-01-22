@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"syscall"
 )
 
 // Checks for user arguements
@@ -22,6 +23,14 @@ func main() {
 func parent() {
 	// /proc/self/exe is a symlink to the current program
 	cmd := exec.Command("/proc/self/exe", append([]string{"child"}, os.Args[2:]...)...)
+
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		// Cloneflags is a bit mask that tells the kernel what to do
+		// CLONE_NEWUTS: Create a new UTS namespace
+		// CLONE_NEWPID: Create a new PID namespace
+		// CLONE_NEWNS: Create a new mount namespace
+		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
+	}
 
 	// Set the command's standard input, output, and error to the current process's standard input, output, and error
 	cmd.Stdin = os.Stdin
