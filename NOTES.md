@@ -14,3 +14,6 @@
 ## CGroups
 - Enforce fair or unfair resource sharing.
 - Manage processes and give them limits.
+
+## Layered filesystems
+- Optimize movement on the machine.
