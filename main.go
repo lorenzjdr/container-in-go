@@ -46,7 +46,15 @@ func parent() {
 
 // Run the user's program 
 func child() {
-	
+	// Mount the root
+	must(syscall.Mount("rootfs", "rootfs", "", syscall.MS_BIND, ""))
+	// Create a directory for the old root filesystem
+	must(os.MkdirAll("rootfs/oldrootfs", 0700))
+	// Pivot the root filesystem to the new root
+	must(syscall.PivotRoot("rootfs", "rootfs/oldrootfs"))
+	// Change the current working directory to the new root
+	must(os.Chdir("/"))
+
 	cmd := exec.Command(os.Args[2], os.Args[3:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
