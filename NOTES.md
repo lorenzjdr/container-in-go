@@ -11,3 +11,6 @@
 - IPC: Isolates communication.
 - USER: Trick the processes in a container to have root access. Mapped to different underpriveleged host providing isolation.
 
+## CGroups
+- Enforce fair or unfair resource sharing.
+- Manage processes and give them limits.
